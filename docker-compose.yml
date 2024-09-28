@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: django-dockerfile  # 指定使用的 Dockerfile 名稱
     command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./locallibrary:/app  # 將本機的 locallibrary 目錄掛載到容器中的 /app
     ports:
       - "8000:8000"  # 將主機的 8000 端口映射到容器的 8000 端口
     working_dir: /app  # 設定容器的工作目錄為 /app
