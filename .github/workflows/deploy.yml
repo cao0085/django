@@ -1,6 +1,5 @@
 name: Django CI/CD Pipeline
 
-# 定義當 push 到 main 分支時觸發工作流
 on:
   push:
     branches:
@@ -21,11 +20,17 @@ jobs:
         with:
           python-version: '3.9'
 
-      # 安裝依賴 (如果需要在本地環境安裝，也可以通過 Docker 安裝)
+      # 安裝依賴
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r django-requirements.txt
+
+      # 安裝 Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
 
       # 構建 Docker 映像並啟動服務
       - name: Build and run Docker containers
