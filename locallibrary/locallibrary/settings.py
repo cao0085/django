@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -128,4 +129,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TIME_ZONE = 'Asia/Taipei'
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
+
+# 讀取環境變量 DJANGO_ALLOWED_HOSTS 的值，如果該變量沒有設置，則默認使用 '0.0.0.0,localhost,127.0.0.1'
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS',
+                          '0.0.0.0,localhost,127.0.0.1').split(',')
