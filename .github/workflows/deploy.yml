@@ -51,3 +51,16 @@ jobs:
       - name: Test the Django server
         run: |
           curl http://localhost:8000
+
+      # 登錄到 Azure
+      - name: 'Log in to Azure'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # 部署到 Azure Web App
+      - name: 'Deploy to Azure Web Ap'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: '<djangotest>'  # 替換為你的 Azure Web App 名稱
+          images: 'cao0085/django-app:latest'   # 替換為你在 Docker 中構建的映像名稱
