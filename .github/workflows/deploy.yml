@@ -45,7 +45,7 @@ jobs:
       # 等待容器中的 Django 應用啟動（添加延遲）
       - name: Wait for Django server to be ready
         run: |
-          sleep 10  # 等待 10 秒，確保伺服器啟動
+          sleep 20  # 等待 10 秒，確保伺服器啟動
 
       # 測試應用是否可以正常訪問 (可選步驟)
       - name: Test the Django server
