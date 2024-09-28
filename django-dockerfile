@@ -4,7 +4,7 @@ FROM python:3.9-slim-buster
 # 設定工作目錄
 WORKDIR /app
 
-# 複製本地應用的所有檔案到容器中
+# 複製本地應用的所有檔案到容器中-
 COPY . /app
 
 # 安裝依賴
