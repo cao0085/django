@@ -1,5 +1,6 @@
-name: Build Docker Image
+name: Django CI/CD Pipeline
 
+# 定義當 push 到 main 分支時觸發工作流
 on:
   push:
     branches:
@@ -10,21 +11,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code from the repository
+      # 檢查代碼出儲存庫
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Build the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t django-app .
+      # 設置 Python 環境
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
 
-      # Run the container to ensure it stays up
-      - name: Run container
+      # 安裝依賴 (如果需要在本地環境安裝，也可以通過 Docker 安裝)
+      - name: Install dependencies
         run: |
-          docker run -d -p 8000:8000 django-app
+          pip install --upgrade pip
+          pip install -r django-requirements.txt
 
-      # Check if the container is running
-      - name: Verify container is running
+      # 構建 Docker 映像並啟動服務
+      - name: Build and run Docker containers
+        run: |
+          docker-compose up --build -d
+
+      # 檢查容器是否在運行 (可選步驟)
+      - name: Verify that Docker containers are running
         run: |
           docker ps
+
+      # 測試應用是否可以正常訪問 (可選步驟)
+      - name: Test the Django server
+        run: |
+          curl http://localhost:8000
