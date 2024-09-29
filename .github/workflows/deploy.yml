@@ -60,8 +60,14 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: 'Deploy Docker image to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'djangotest'
-          images: 'codeing0085/django_test:latest'
+          images: 'codeing0085/django_test:latest'  # 推送 Docker 映像
+
+      - name: 'Deploy locallibrary to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'djangotest'
+          package: './locallibrary'  # 指定要上傳的資料夾
