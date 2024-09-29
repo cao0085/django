@@ -35,14 +35,6 @@ jobs:
       - name: List Docker images
         run: docker images  # 確認映像是否已構建
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Push Docker image
-        run: |
-          docker tag django:latest codeing0085/django_test:latest  # 將本地映像標籤為要推送的名稱
-          docker push codeing0085/django_test:latest
-
       - name: Verify that Docker containers are running
         run: |
           docker ps
@@ -60,14 +52,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: 'Deploy Docker image to Azure Web App'
+      - name: 'Deploy entire repository to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'djangotest'
-          images: 'codeing0085/django_test:latest'  # 推送 Docker 映像
-
-      - name: 'Deploy locallibrary to Azure Web App'
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'djangotest'
-          package: './locallibrary'  # 指定要上傳的資料夾
+          package: '.'  # 指定上傳整個儲存庫
