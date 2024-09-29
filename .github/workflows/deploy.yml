@@ -10,57 +10,55 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 檢查代碼出儲存庫
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 設置 Python 環境
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      # 安裝依賴
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r django-requirements.txt
 
-      # 安裝 Docker Compose
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-      # 構建 Docker 映像並啟動服務
       - name: Build and run Docker containers
         run: |
           docker-compose up --build -d
 
-      # 檢查容器是否在運行 (可選步驟)
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker image
+        run: |
+          docker tag codeing0085/django_test:latest codeing0085/django_test:latest
+          docker push codeing0085/django_test:latest
+
       - name: Verify that Docker containers are running
         run: |
           docker ps
 
-      # 等待容器中的 Django 應用啟動（添加延遲）
       - name: Wait for Django server to be ready
         run: |
-          sleep 20  # 等待 10 秒，確保伺服器啟動
+          sleep 10
 
-      # 測試應用是否可以正常訪問 (可選步驟)
       - name: Test the Django server
         run: |
           curl http://localhost:8000
 
-      # 登錄到 Azure
       - name: 'Log in to Azure'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # 部署到 Azure Web App
-      - name: 'Deploy to Azure Web Ap'
+      - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'djangotest'  # 替換為你的 Azure Web App 名稱
-          images: 'cao0085/django-app:latest'   # 替換為你在 Docker 中構建的映像名稱
+          app-name: 'djangotest'
+          images: 'codeing0085/django_test:latest'
