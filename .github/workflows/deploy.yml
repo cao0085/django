@@ -32,12 +32,15 @@ jobs:
         run: |
           docker-compose up --build -d
 
+      - name: List Docker images
+        run: docker images  # 確認映像是否已構建
+
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Push Docker image
         run: |
-          docker tag codeing0085/django_test:latest codeing0085/django_test:latest
+          docker tag django:latest codeing0085/django_test:latest  # 將本地映像標籤為要推送的名稱
           docker push codeing0085/django_test:latest
 
       - name: Verify that Docker containers are running
@@ -46,7 +49,7 @@ jobs:
 
       - name: Wait for Django server to be ready
         run: |
-          sleep 10
+          sleep 20
 
       - name: Test the Django server
         run: |
