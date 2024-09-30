@@ -35,7 +35,7 @@ jobs:
 
       - name: Check if Django is running
         run: |
-          curl -f http://localhost:8000 || echo "Django is not running"
+          curl -v http://localhost:8000 || echo "Django is not running"
 
       - name: List Docker images
         run: docker images  # 確認映像是否已構建
