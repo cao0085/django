@@ -9,6 +9,9 @@ COPY . /app
 # 安裝依賴
 RUN pip install --no-cache-dir -r django-requirements.txt
 
+# 確認 Django 是否安裝
+RUN python -c "import django; print('Django version:', django.get_version())"
+
 # 開放 8000 端口
 EXPOSE 8000
 
