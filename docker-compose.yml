@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: django-dockerfile  # 指定使用的 Dockerfile 名稱
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python /app/locallibrary/manage.py runserver 0.0.0.0:8000
     image: django
     volumes:
       - ./locallibrary:/app  # 將本機的 locallibrary 目錄掛載到容器中的 /app
