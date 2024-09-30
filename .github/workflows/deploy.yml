@@ -39,3 +39,14 @@ jobs:
 
       - name: List Docker images
         run: docker images  # 確認映像是否已構建
+      
+      - name: 'Log in to Azure'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Deploy entire repository to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'djangotest'
+          package: '.'  # 指定上傳整個儲存庫
