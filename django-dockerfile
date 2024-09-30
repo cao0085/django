@@ -1,10 +1,9 @@
-# 使用適合 M1 的 Python 映像檔，這裡使用的是 arm64 版本的 Python 3.9
 FROM python:3.9-slim-buster
 
 # 設定工作目錄
 WORKDIR /app
 
-# 複製本地應用的所有檔案到容器中-
+# 複製本地應用的所有檔案到容器中
 COPY . /app
 
 # 安裝依賴
@@ -13,4 +12,8 @@ RUN pip install --no-cache-dir -r django-requirements.txt
 # 開放 8000 端口
 EXPOSE 8000
 
-CMD ["tail", "-f", "/dev/null"]
+# 設定工作目錄為 locallibrary
+WORKDIR /app/locallibrary
+
+# 使用 exec 來啟動 Django 應用
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
