@@ -131,5 +131,6 @@ TIME_ZONE = 'Asia/Taipei'
 
 
 # 讀取環境變量 DJANGO_ALLOWED_HOSTS 的值，如果該變量沒有設置，則默認使用 '0.0.0.0,localhost,127.0.0.1'
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS',
-                          '0.0.0.0,localhost,127.0.0.1').split(',')
+# ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS',
+#                           '0.0.0.0,localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = ['*']  # 允許所有主機（僅用於開發）
